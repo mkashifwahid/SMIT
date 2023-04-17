@@ -1,10 +1,10 @@
 (async function () {
   data = await fetch("./data/data.json").then((response) => response.json());
   console.log(data);
-  const gen = [];
-  const lang = [];
-  const year = [];
-  const rating = [];
+  const gen = ['All'];
+  const lang = ['All'];
+  const year = ['All'];
+  const rating = ['All'];
 
   showData(data);
   setSelect();
@@ -18,38 +18,45 @@
   selectYearElem.addEventListener("change", filteredData);
   selectLangElem.addEventListener("change", filteredData);
 
-
   function filteredData() {
     const filterdData = data.filter((m) => {
-      const filterdDataG = selectGenElem.value == 'All'? m : m.genres.includes(selectGenElem.value);
-      const filterdDataY = selectYearElem.value == 'All' ? m :
-        new Date(m.release_date).getFullYear() == selectYearElem.value;
-      const filterdDataL = selectLangElem.value='All'? m : m.original_language == selectLangElem.value;
-      const filterdDataR = selectRatingElem.value='All'? m : m.vote_average >= selectRatingElem.value;
+      const filterdDataG =
+        selectGenElem.value == "All"
+          ? m
+          : m.genres.includes(selectGenElem.value);
+      const filterdDataY =
+        selectYearElem.value == "All"
+          ? m
+          : new Date(m.release_date).getFullYear() == selectYearElem.value;
+      const filterdDataL =
+        selectLangElem.value == "All"
+          ? m
+          : m.original_language == selectLangElem.value;
+      const filterdDataR =
+        selectRatingElem.value == "All"
+          ? m
+          : m.vote_average >= selectRatingElem.value;
 
       return filterdDataG && filterdDataY && filterdDataL && filterdDataR;
     });
-    showData(filterdData)
+    showData(filterdData);
 
-    console.log(filterdData)
+    console.log(filterdData);
   }
 
   function showData(data) {
-
     const mainElem = document.getElementById("main");
-    mainElem.innerHTML = ''
-        
+    mainElem.innerHTML = "";
+
     data.map(function (e) {
-        const HeaderrowElem = document.createElement("tr");        
-        const HeaderElem1 = document.createElement("th");        
-        HeaderElem1.innerText = 'Rank'
-        const HeaderElem2 = document.createElement("th");        
-        HeaderElem2.innerText = 'Movie'
-        const HeaderElem3 = document.createElement("th");        
-        HeaderElem3.innerText = 'Year'
-        HeaderrowElem.appendChild(HeaderElem1, HeaderElem2, HeaderElem3)
-
-
+      const HeaderrowElem = document.createElement("tr");
+      const HeaderElem1 = document.createElement("th");
+      HeaderElem1.innerText = "Rank";
+      const HeaderElem2 = document.createElement("th");
+      HeaderElem2.innerText = "Movie";
+      const HeaderElem3 = document.createElement("th");
+      HeaderElem3.innerText = "Year";
+      HeaderrowElem.appendChild(HeaderElem1, HeaderElem2, HeaderElem3);
 
       const rowElem = document.createElement("tr");
       const dRankElem = document.createElement("td"); //.innerHTML = data.vote_average
@@ -63,21 +70,19 @@
       dMoveElem.appendChild(imgMovieElem);
       dMoveElem.appendChild(pMovieElem);
       const dYearElem = document.createElement("td"); //.innerHTML = data.release_date
-      const d = new Date();
       dYearElem.innerText = new Date(e.release_date).getFullYear();
 
       rowElem.appendChild(dRankElem);
       rowElem.appendChild(dMoveElem);
       rowElem.appendChild(dYearElem);
       mainElem.appendChild(rowElem);
+      console.log(typeof e.genres)
+       const genArray = typeof e.genres==='string'? e.genres : Object(e.genres).forEach((element)=>{console.log(element)})
 
-      lang.push("All");
+      gen.push(genArray)  
       lang.push(e.original_language);
-      gen.push("All");
-      gen.push(gen, ...e.genres);
-      year.push("All");
+
       year.push(new Date(e.release_date).getFullYear());
-      rating.push("All");
       rating.push(e.vote_average);
     });
   }
