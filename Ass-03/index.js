@@ -18,6 +18,7 @@
   selectYearElem.addEventListener("change", filteredData);
   selectLangElem.addEventListener("change", filteredData);
 
+
   function filteredData() {
     const filterdData = data.filter((m) => {
       const filterdDataG = selectGenElem.value == 'All'? m : m.genres.includes(selectGenElem.value);
@@ -25,16 +26,31 @@
         new Date(m.release_date).getFullYear() == selectYearElem.value;
       const filterdDataL = selectLangElem.value='All'? m : m.original_language == selectLangElem.value;
       const filterdDataR = selectRatingElem.value='All'? m : m.vote_average >= selectRatingElem.value;
+
       return filterdDataG && filterdDataY && filterdDataL && filterdDataR;
     });
-
     showData(filterdData)
+
     console.log(filterdData)
   }
 
   function showData(data) {
+
     const mainElem = document.getElementById("main");
+    mainElem.innerHTML = ''
+        
     data.map(function (e) {
+        const HeaderrowElem = document.createElement("tr");        
+        const HeaderElem1 = document.createElement("th");        
+        HeaderElem1.innerText = 'Rank'
+        const HeaderElem2 = document.createElement("th");        
+        HeaderElem2.innerText = 'Movie'
+        const HeaderElem3 = document.createElement("th");        
+        HeaderElem3.innerText = 'Year'
+        HeaderrowElem.appendChild(HeaderElem1, HeaderElem2, HeaderElem3)
+
+
+
       const rowElem = document.createElement("tr");
       const dRankElem = document.createElement("td"); //.innerHTML = data.vote_average
       dRankElem.innerText = e.vote_average;
